@@ -1,0 +1,138 @@
+{
+  "name": "Return Status",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1r5r1ON6eWvLrMpOEL9BuTkI-esu1Achh92j3W5tua5s",
+          "mode": "list",
+          "cachedResultName": " MyLibrary Bot Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r5r1ON6eWvLrMpOEL9BuTkI-esu1Achh92j3W5tua5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Issued_Books",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r5r1ON6eWvLrMpOEL9BuTkI-esu1Achh92j3W5tua5s/edit#gid=0"
+        },
+        "event": "rowUpdate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7bddb7f7-169f-414c-b0b9-9ed6b192acda",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "oMUW0Lg0ufUvsXWf",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2a903804-2476-4041-b8f3-2a715f899d28",
+              "leftValue": "={{ $json['Return Status'] }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "8bfaaeba-d14d-443c-806d-81674e40b231",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "from": "whatsapp:+14155238886",
+        "to": "=whatsapp:{{ $json[' Phone Number'] }}",
+        "message": "=Dear, {{ $json['Student Name'] }}\n\nThis message is to confirm the successful return of the following book to the library:\n\nBook Title: {{ $json['Book Title'] }}\n\nThank you for returning it on time. We look forward to seeing you at the library again soon.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -96
+      ],
+      "id": "d7c09f4a-0e12-4fb8-acae-e179a67e02ca",
+      "name": "Send an SMS/MMS/WhatsApp message",
+      "credentials": {
+        "twilioApi": {
+          "id": "1fcMKiHErFhtyidH",
+          "name": "Twilio account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4c5aaa3b-193f-43da-b8aa-f76308d4cd0c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9de1ff33766b2489e524dfd41d5f872b730cfcdf190e96ca23f03d9f2a0173ba"
+  },
+  "id": "kpp25fMK1LLAgBwE",
+  "tags": []
+}

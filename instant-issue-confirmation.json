@@ -1,0 +1,93 @@
+{
+  "name": "Instant Issue Confirmation",
+  "nodes": [
+    {
+      "parameters": {
+        "from": "whatsapp:+14155238886",
+        "to": "=whatsapp:{{ $json[' Phone Number'] }}",
+        "message": "=Hi {{ $json['Student Name'] }}, you have just been issued the book '{{ $json['Book Title'] }}'. Please return it by {{ $json['Due Date'] }}. Happy reading! 📚",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e484a352-3cdc-4f19-8593-841d47d5fae8",
+      "name": "Send an SMS/MMS/WhatsApp message",
+      "credentials": {
+        "twilioApi": {
+          "id": "1fcMKiHErFhtyidH",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1r5r1ON6eWvLrMpOEL9BuTkI-esu1Achh92j3W5tua5s",
+          "mode": "list",
+          "cachedResultName": " MyLibrary Bot Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r5r1ON6eWvLrMpOEL9BuTkI-esu1Achh92j3W5tua5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Issued_Books",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r5r1ON6eWvLrMpOEL9BuTkI-esu1Achh92j3W5tua5s/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "88264773-811b-4778-ba05-aa6c4e29abff",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "oMUW0Lg0ufUvsXWf",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1cf86da7-260c-48d4-bad5-3fd63e7d8d17",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9de1ff33766b2489e524dfd41d5f872b730cfcdf190e96ca23f03d9f2a0173ba"
+  },
+  "id": "Rv8tiSm39VX5jqz4",
+  "tags": []
+}

@@ -1,0 +1,242 @@
+{
+  "name": "My Books",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cdaa0de8-84a6-473a-9d48-382e92817775",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bcdbb1ff-fada-476b-80cd-ee410ed47fd4",
+      "name": "Webhook",
+      "webhookId": "cdaa0de8-84a6-473a-9d48-382e92817775"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "784d54bd-3a31-4683-96bc-e08c9efface2",
+              "leftValue": "={{$('Webhook').item.json.body.Body}}",
+              "rightValue": "My Books",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "6acdf258-cb90-4b9f-b2e3-316abc6785ab",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1r5r1ON6eWvLrMpOEL9BuTkI-esu1Achh92j3W5tua5s",
+          "mode": "list",
+          "cachedResultName": " MyLibrary Bot Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r5r1ON6eWvLrMpOEL9BuTkI-esu1Achh92j3W5tua5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Issued_Books",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1r5r1ON6eWvLrMpOEL9BuTkI-esu1Achh92j3W5tua5s/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": " Phone Number",
+              "lookupValue": "={{$('Webhook').item.json.body.From.replace('whatsapp:+', '')}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "d6888f3b-8480-4576-8ae2-6561ba418da7",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5vm7BfGyzJJzPimW",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// This code assumes the input is from the Google Sheet \"Get row(s)\" node.\nconst books = $input.all();\n\nlet booksToReturn = [];\nlet returnedBooks = [];\nlet lostBooks = [];\n\n// Loop through each book and sort it into the correct category\nfor (const item of books) {\n  // Use bracket notation ['...'] for column names with spaces\n  const status = item.json['Return Status'] ? item.json['Return Status'].toLowerCase() : 'no';\n  const bookTitle = item.json['Book Title'];\n  const issuedDate = item.json['Issued Date'];\n  const dueDate = item.json['Due Date'];\n  const statusDate = item.json['Status Date'];\n  \n  if (status === 'no') {\n    booksToReturn.push(`- *${bookTitle}*\\n  - Issued: ${issuedDate}\\n  - Due: ${dueDate}`);\n  } else if (status === 'yes') {\n    returnedBooks.push(`- *${bookTitle}*\\n  - Returned On: ${statusDate}`);\n  } else if (status === 'lost') {\n    lostBooks.push(`- *${bookTitle}*\\n  - Reported On: ${statusDate}`);\n  }\n}\n\n// Start building the final message\nlet message = \"Hi Geethika,\\n\\nHere is your library summary:\\n\\n\";\n\nif (booksToReturn.length > 0) {\n  message += \"📚 *Books To Be Returned:*\\n\" + booksToReturn.join('\\n') + \"\\n\\n\";\n}\n\nif (returnedBooks.length > 0) {\n  message += \"✅ *Your Returned Books:*\\n\" + returnedBooks.join('\\n') + \"\\n\\n\";\n}\n\nif (lostBooks.length > 0) {\n  message += \"⚠️ *Reported Lost Books:*\\n\" + lostBooks.join('\\n') + \"\\n\\n\";\n}\n\n// If the student has no books at all\nif (booksToReturn.length === 0 && returnedBooks.length === 0 && lostBooks.length === 0) {\n    message = \"Hi Geethika, you have no books currently issued from the library.\"\n}\n\n// Return the final message for the Twilio node to use\nreturn { message: message };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        -96
+      ],
+      "id": "f78eb28a-040c-4ad1-9ac4-02c5434b9f6c",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.twilio.com/2010-04-01/Accounts/AC0f9b41ecf23f456f75a52ba3090853ff/Messages.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "To",
+              "value": "={{ $('Edit Fields').all()[0].json.recipientNumber }}"
+            },
+            {
+              "name": "From",
+              "value": "=whatsapp:+14155238886"
+            },
+            {
+              "name": "Body",
+              "value": "={{$('Code').item.json.message}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        976,
+        -96
+      ],
+      "id": "f20a2326-d169-4218-b573-9434d4f207ed",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "uyMd8vDFn2kMe8qO",
+          "name": "Twilio Keys"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "63cfadad-3034-4598-89db-319d8becd5d4",
+              "name": "recipientNumber",
+              "value": "={{$json.body.From}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "32fdab35-cc62-4081-89e9-cf3047d769e5",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "77874d1c-1495-4f63-bd22-eda84c5f48c1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9de1ff33766b2489e524dfd41d5f872b730cfcdf190e96ca23f03d9f2a0173ba"
+  },
+  "id": "Gw90U8CEqpUnUzLO",
+  "tags": []
+}
