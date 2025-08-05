@@ -22,9 +22,9 @@ This project is an ecosystem of automated services, each designed to handle a sp
 
 The system uses a combination of event-driven and scheduled workflows to achieve full automation.
 
-* **User-Initiated Events:** The `My Books` workflow is triggered by a Webhook. It waits for a student to send a specific message ("My Books") via WhatsApp, which is forwarded by Twilio to the webhook URL.
-* **Data-Driven Events:** The `Instant Issue Confirmation` and `Return Status` workflows use n8n's Google Sheets trigger to constantly poll the sheet for changes (new rows or updated rows), running their logic automatically when a change is detected.
-* **Scheduled Events:** The `Daily Reminder Service` uses a Schedule Trigger to run at a specific time each day (e.g., 9 AM) to perform its task of sending reminders.
+* **User-Initiated Events:** The `My Books (Interactive)` workflow is triggered by a Webhook. It waits for a student to send a specific message ("My Books") via WhatsApp, which is forwarded by Twilio to the webhook URL.
+* **Data-Driven Events:** The `New Book Notification` and `Return Confirmation` workflows use n8n's Google Sheets trigger to constantly poll the sheet for changes (new rows or updated rows), running their logic automatically when a change is detected.
+* **Scheduled Events:** The `Daily Due Date Reminder` uses a Schedule Trigger to run at a specific time each day (e.g., 9 AM) to perform its task of sending reminders.
 
 ## 🛠️ Tech Stack
 
@@ -44,12 +44,12 @@ This project contains multiple, separate workflows. To get them running, follow 
 
 **Installation Steps:**
 
-1.  **Import Workflows:** In your n8n instance, import each of the five provided workflow `.json` files.
+1.  **Import Workflows:** In your n8n instance, import each of the five provided workflow `.json` files: `my-books-summary.json`, `instant-issue-confirmation.json`, `new-book-notification.json`, `return-status-confirmation.json`, and `daily-reminder-service.json`.
 2.  **Configure Credentials:** For each workflow, open the Google Sheets and Twilio nodes and configure the **Credentials** by selecting your connected accounts.
-3.  **Set Up the Interactive Bot:** This project contains one interactive workflow, `My Books`, which is triggered by a webhook.
+3.  **Set Up the Interactive Bot:** This project contains one interactive workflow, `My Books (Interactive)`, which is triggered by a webhook.
     * To make it work, copy the Webhook URL from its `Webhook` trigger node.
     * In your Twilio Console, paste this URL into your phone number's "A MESSAGE COMES IN" field and save.
-    * **Important Note:** A Twilio number can only point to one webhook URL at a time. This means only the `My Books` workflow can be used for interactive chats with this setup.
+    * **Important Note:** A Twilio number can only point to one webhook URL at a time. This means only the `My Books (Interactive)` workflow can be used for interactive chats with this setup.
 4.  **Activate Workflows:** Set the workflows you wish to use to **Active**.
     * **Limitation:** Most n8n plans (especially free or trial versions) have a limit on how many workflows can be active at once. You may need to choose which automations are most important to you and only activate those.
 
@@ -57,8 +57,8 @@ This project contains multiple, separate workflows. To get them running, follow 
 
 This project contains the following workflows:
 
-* **`My Books.json`:** An interactive workflow that listens for the text "My Books" and replies with a complete summary of the student's library account status.
-* **`Instant Issue Confirmation.json`:** An automated workflow that sends a confirmation to a student as soon as a new book is issued to them in the Google Sheet.
-* **`Librarian Initiated Flow.json`:** A similar workflow for new book issue confirmations.
-* **`Return Status.json`:** An automated workflow that sends a "Thank you for returning" message when a book's status is updated in the sheet.
-* **`Daily Reminder Service.json`:** A scheduled workflow that runs once a day to remind students of their pending due dates.
+* **`my-books-summary.json`:** An interactive workflow named `My Books (Interactive)` that listens for the text "My Books" and replies with a complete summary of the student's library account status.
+* **`instant-issue-confirmation.json`:** An automated workflow named `Instant Issue Confirmation` that sends a confirmation to a student as soon as a new book is issued to them in the Google Sheet.
+* **`new-book-notification.json`:** A similar workflow for new book issue confirmations, named `New Book Notification`.
+* **`return-status-confirmation.json`:** An automated workflow named `Return Confirmation` that sends a "Thank you for returning" message when a book's status is updated in the sheet.
+* **`daily-reminder-service.json`:** A scheduled workflow named `Daily Due Date Reminder` that runs once a day to remind students of their pending due dates.
