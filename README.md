@@ -59,6 +59,6 @@ This project contains the following workflows:
 
 * **`My Books.json`:** An interactive workflow that listens for the text "My Books" and replies with a complete summary of the student's library account status.
 * **`Instant Issue Confirmation.json`:** An automated workflow that sends a confirmation to a student as soon as a new book is issued to them in the Google Sheet.
-* **`Librarian-Initiated Flow.json`:** A similar workflow for new book issue confirmations.
+* **`Librarian Initiated Flow.json`:** A similar workflow for new book issue confirmations.
 * **`Return Status.json`:** An automated workflow that sends a "Thank you for returning" message when a book's status is updated in the sheet.
 * **`Daily Reminder Service.json`:** A scheduled workflow that runs once a day to remind students of their pending due dates.
