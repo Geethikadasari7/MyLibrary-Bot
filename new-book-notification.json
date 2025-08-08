@@ -1,5 +1,5 @@
 {
-  "name": "Librarian-Initiated Flow",
+  "name": "New Book Notification",
   "nodes": [
     {
       "parameters": {
@@ -33,11 +33,11 @@
         0,
         0
       ],
-      "id": "f187ec90-7320-4622-96de-6cb87e02e3ee",
+      "id": "decd25cc-061d-423a-96ad-50b7a067e742",
       "name": "Google Sheets Trigger",
       "credentials": {
         "googleSheetsTriggerOAuth2Api": {
-          "id": "oMUW0Lg0ufUvsXWf",
+          "id": "1SrxrOF3xLcBAZWg",
           "name": "Google Sheets Trigger account"
         }
       }
@@ -52,7 +52,7 @@
         416,
         96
       ],
-      "id": "57656c8d-129b-4d83-81b3-a7096c63fc94",
+      "id": "9c224d09-2529-4143-8f0d-cf0b35a0fd53",
       "name": "Wait",
       "webhookId": "f7e9138e-c1c8-4667-9b45-c9d8a31ad140"
     },
@@ -60,7 +60,7 @@
       "parameters": {
         "from": "whatsapp:+14155238886",
         "to": "=whatsapp:{{ $json[' Phone Number'] }}",
-        "message": "=Hi {{ $json['Student Name'] }}, you have just been issued the book '{{ $json['Book Title'] }}'. Please return it by {{ $json['Due Date'] }}. Happy reading! 📚",
+        "message": "=Dear {{ $json['Student Name'] }},\nYou have been issued the book '{{ $json['Book Title'] }}''. Kindly ensure it is returned by {{ $json['Due Date'] }} .\nWishing you an enjoyable reading experience. 📚",
         "options": {}
       },
       "type": "n8n-nodes-base.twilio",
@@ -69,11 +69,11 @@
         560,
         144
       ],
-      "id": "9c09d5e9-18f2-4545-b315-bef679d55468",
+      "id": "a3412bb8-e6fd-40c0-9b4e-4cacf9071fbf",
       "name": "Send an SMS/MMS/WhatsApp message1",
       "credentials": {
         "twilioApi": {
-          "id": "1fcMKiHErFhtyidH",
+          "id": "mOOPkQpxX1oXdlqM",
           "name": "Twilio account"
         }
       }
@@ -88,7 +88,7 @@
         208,
         0
       ],
-      "id": "e447a39b-eeef-42ec-ab45-36bbf882cd30",
+      "id": "ce446e1a-a7c6-4556-aec3-93d9ec68ee1d",
       "name": "Loop Over Items"
     }
   ],
@@ -116,11 +116,6 @@
         ]
       ]
     },
-    "Send an SMS/MMS/WhatsApp message1": {
-      "main": [
-        []
-      ]
-    },
     "Loop Over Items": {
       "main": [
         [],
@@ -138,11 +133,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "329b0989-5b79-4211-ab58-5210efc87c76",
+  "versionId": "1f806c62-5db4-4077-a737-6062e1b2ad2d",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "9de1ff33766b2489e524dfd41d5f872b730cfcdf190e96ca23f03d9f2a0173ba"
+    "instanceId": "f3ba13f7ad057b0558981f9de71d141388bc8549cac0a3e1f94714532618b9d2"
   },
-  "id": "MKCOc5JnmJoBAb6z",
+  "id": "rNaE1np6LdwYm0M7",
   "tags": []
 }
