@@ -5,7 +5,7 @@
       "parameters": {
         "from": "whatsapp:+14155238886",
         "to": "=whatsapp:{{ $json[' Phone Number'] }}",
-        "message": "=Hi {{ $json['Student Name'] }}, you have just been issued the book '{{ $json['Book Title'] }}'. Please return it by {{ $json['Due Date'] }}. Happy reading! 📚",
+        "message": "=Dear {{ $json['Student Name'] }},\nYou have been issued the book '{{ $json['Book Title'] }}''. Kindly ensure it is returned by {{ $json['Due Date'] }} .\nWishing you an enjoyable reading experience. 📚",
         "options": {}
       },
       "type": "n8n-nodes-base.twilio",
@@ -14,11 +14,11 @@
         208,
         0
       ],
-      "id": "e484a352-3cdc-4f19-8593-841d47d5fae8",
+      "id": "afd9a84a-d3d5-4cfb-be98-71491f35a10c",
       "name": "Send an SMS/MMS/WhatsApp message",
       "credentials": {
         "twilioApi": {
-          "id": "1fcMKiHErFhtyidH",
+          "id": "mOOPkQpxX1oXdlqM",
           "name": "Twilio account"
         }
       }
@@ -55,11 +55,11 @@
         0,
         0
       ],
-      "id": "88264773-811b-4778-ba05-aa6c4e29abff",
+      "id": "4aeb6f99-0340-4d6a-8e58-bbde11c3dc7d",
       "name": "Google Sheets Trigger",
       "credentials": {
         "googleSheetsTriggerOAuth2Api": {
-          "id": "oMUW0Lg0ufUvsXWf",
+          "id": "1SrxrOF3xLcBAZWg",
           "name": "Google Sheets Trigger account"
         }
       }
@@ -83,11 +83,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "1cf86da7-260c-48d4-bad5-3fd63e7d8d17",
+  "versionId": "832fa5d4-c4c3-4837-a679-322c1e66929d",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "9de1ff33766b2489e524dfd41d5f872b730cfcdf190e96ca23f03d9f2a0173ba"
+    "instanceId": "f3ba13f7ad057b0558981f9de71d141388bc8549cac0a3e1f94714532618b9d2"
   },
-  "id": "Rv8tiSm39VX5jqz4",
+  "id": "X0PIysVoxOM6vs8g",
   "tags": []
 }
