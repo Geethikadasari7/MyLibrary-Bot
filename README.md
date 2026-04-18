@@ -18,13 +18,47 @@ This project is an ecosystem of automated services, each designed to handle a sp
 * ✅ **Automatic Return Confirmations:** When a librarian updates a book's status to "Yes" in the sheet, the student receives an instant confirmation message.
 * ⏰ **Daily Due Date Reminders:** A workflow runs automatically every morning to find all books that have not yet been returned and sends a polite due date reminder via WhatsApp to the respective students.
 
-## ⚙️ How It Works: System Architecture
+## ⚙️ System Architecture (MyLibrary-Bot)
 
-The system uses a combination of event-driven and scheduled workflows to achieve full automation.
+```mermaid
+flowchart LR
 
-* **User-Initiated Events:** The `My Books (Interactive)` workflow is triggered by a Webhook. It waits for a student to send a specific message ("My Books") via WhatsApp, which is forwarded by Twilio to the webhook URL.
-* **Data-Driven Events:** The `New Book Notification` and `Return Confirmation` workflows use n8n's Google Sheets trigger to constantly poll the sheet for changes (new rows or updated rows), running their logic automatically when a change is detected.
-* **Scheduled Events:** The `Daily Due Date Reminder` uses a Schedule Trigger to run at a specific time each day (e.g., 9 AM) to perform its task of sending reminders.
+%% USER FLOW
+subgraph U[User Interaction Layer]
+A[User-`My Books`-WhatsApp] --> B[Twilio API]
+B --> C[Webhook Trigger n8n]
+end
+
+subgraph P1[Processing Layer]
+C --> D[My Books Workflow]
+D --> E[Fetch Data - Google Sheets]
+end
+
+subgraph O1[Output Layer]
+E --> F[Send Response-WhatsApp]
+end
+
+%% DATA FLOW
+subgraph D1[Data Driven Automation]
+G[Google Sheets Change] --> H[New Book Notification]
+G --> I[Return Confirmation]
+end
+
+subgraph O2[Notifications]
+H --> J[Send New Book Alert]
+I --> K[Send Return Confirmation]
+end
+
+%% SCHEDULED FLOW
+subgraph S[Scheduled Automation]
+L[Daily Scheduler 9 AM] --> M[DueDateReminder Workflow]
+M --> N[Check Due Dates]
+N --> O[Send Reminder-WhatsApp]
+end
+
+%% CONNECTION
+E --> G
+```
 
 ## 🛠️ Tech Stack
 
