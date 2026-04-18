@@ -150,4 +150,4 @@ The idea, workflow design, and system architecture behind **MyLibrary-Bot** are 
 
 This repository is shared here for educational and demonstration purposes.
 
-📩 For collaborations or queries, connect with me at **geethikaadasari@gmail.com**
+📩 For collaborations or queries, connect me at **geethikaadasari@gmail.com**
